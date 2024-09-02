@@ -23,6 +23,7 @@ jobs:
             docker login -u $username -p $password 
         - name: build the docker image
           id: build-docker-image
+          working-directory: node_project
           run: |
             ls -la 
             docker build . -f Dockerfile -t dhruvin30/demo-image-test:latest
