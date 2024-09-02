@@ -26,7 +26,7 @@ jobs:
           working-directory: node-project
           run: |
             ls -la 
-            docker build . -f Dockerfile -t dhruvin30/demo-image-test:latest
+            docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
         - name: push the docker image
           id: push-docker-image
           run: docker push ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
