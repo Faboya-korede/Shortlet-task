@@ -85,18 +85,20 @@ jobs:
       - name: OPA Policy Result Check
         id: opa_result_parse
         run: |
-          if [[ -f Terraform/result.json ]]; then
-            if [[ $(jq '.result[0].result' Terraform/result.json) == "[]" ]]; then
-              echo "Terraform plan compliant with OPA policies."
-            else
-              echo $(jq '.result[0].result' Terraform/result.json)
-              exit 1
-            fi
+          # Extract the OPA policy results from the result.json file
+          policy_results=$(jq '.result[0].result' result.json)
+          
+          # Check if the policy results are empty
+          if [[ "$policy_results" == "[]" ]]; then
+            echo "Terraform plan compliant with OPA policies."
           else
-            echo "result.json not found."
+            # Output the policy results if not compliant
+            echo "Policy violations found:"
+            echo "$policy_results"
             exit 1
           fi
-        working-directory: Terraform/
+      
+      
         
 
   terraform:
