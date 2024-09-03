@@ -139,4 +139,4 @@ jobs:
 
       - name: Terraform Apply
         run: terraform plan -var-file=cred.tfvars
-        working-directory: terraform/
+        working-directory: Terraform/
