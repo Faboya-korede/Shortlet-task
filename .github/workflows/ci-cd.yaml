@@ -84,14 +84,8 @@ jobs:
       
       - name: Evaluate with OPA
         run: |
-          opa eval --data opa/policies/gke.rego --input tfplan.json --format json "data" > result.json
+          opa eval --data opa/policies/iam.rego --input tfplan.json --format json "data" > result.json
           cat result.json
-        working-directory: Terraform/  
-        
-      - name: secod evaluation
-        run: |
-          opa eval --data opa/policies/firewall.rego --input tfplan.json --format json "data" > test.json
-          cat test.json
         working-directory: Terraform/  
         
       
