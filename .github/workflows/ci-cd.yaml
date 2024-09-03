@@ -90,7 +90,8 @@ jobs:
           else
             echo $(jq '.result[0].result' result.json)
             exit 1
-          fi  
+          fi 
+        working-directory: Terraform/  
 
   terraform:
     runs-on: ubuntu-latest
