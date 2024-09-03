@@ -3,7 +3,7 @@ terraform {
 
 
   backend "gcs" {
-    bucket = var.bucket
+    bucket = "terraform-shortlet"
     prefix = "terraform.tfstate/"
   }
 

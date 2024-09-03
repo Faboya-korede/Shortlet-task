@@ -11,12 +11,6 @@ variable "region" {
 
 }
 
-variable "bucket" {
-  type      = string
-  sensitive = true
-
-}
-
 variable "cluster_location" {
   type      = string
   sensitive = true
