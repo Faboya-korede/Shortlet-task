@@ -79,19 +79,25 @@ jobs:
       - name: Evaluate with OPA
         run: |
           opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.json
+          cat result.json
         working-directory: Terraform/
 
       - name: OPA Policy Result Check
         id: opa_result_parse
         run: |
-          if [[ $(jq '.result[0].result' result.json) == [] ]]; then
-            echo "Terraform plan compliant with OPA policies."
-            continue;
+          if [[ -f Terraform/result.json ]]; then
+            if [[ $(jq '.result[0].result' Terraform/result.json) == "[]" ]]; then
+              echo "Terraform plan compliant with OPA policies."
+            else
+              echo $(jq '.result[0].result' Terraform/result.json)
+              exit 1
+            fi
           else
-            echo $(jq '.result[0].result' result.json)
+            echo "result.json not found."
             exit 1
-          fi 
-        working-directory: Terraform/  
+          fi
+        working-directory: Terraform/
+        
 
   terraform:
     runs-on: ubuntu-latest
