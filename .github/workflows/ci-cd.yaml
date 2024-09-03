@@ -14,6 +14,12 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
+
+        - name: Authenticate to Google Cloud
+          uses: google-github-actions/auth@v1
+          with:
+            credentials_json: ${{ secrets.GCP_SA_KEY }} 
+
         - name: login to docker hub
           id: docker-hub
           env:
@@ -41,10 +47,7 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-         
-
-
+          credentials_json: ${{ secrets.GCP_SA_KEY }}         
       
       - name: Create cred.tfvars
         run: |
@@ -75,8 +78,19 @@ jobs:
 
       - name: Evaluate with OPA
         run: |
-          opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format pretty
+          opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.json
         working-directory: Terraform/
+
+      - name: OPA Policy Result Check
+        id: opa_result_parse
+        run: |
+          if [[ $(jq '.result[0].result' result.json) == [] ]]; then
+            echo "Terraform plan compliant with OPA policies."
+            continue;
+          else
+            echo $(jq '.result[0].result' result.json)
+            exit 1
+          fi  
 
   terraform:
     runs-on: ubuntu-latest
