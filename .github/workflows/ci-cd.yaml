@@ -38,6 +38,7 @@ jobs:
       run: gcloud auth configure-docker
 
     - name: Build and push Docker image
+      working-directory: node-project
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
