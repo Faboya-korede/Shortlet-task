@@ -65,7 +65,7 @@ resource "kubernetes_service" "shortlet_api" {
 
     port {
       port        = 80
-      target_port  = 3000
+      target_port = 3000
     }
 
     type = "LoadBalancer"

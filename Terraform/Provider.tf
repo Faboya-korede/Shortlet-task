@@ -1,11 +1,11 @@
 terraform {
   required_version = ">= 1.0.0"
 
- 
+
   backend "gcs" {
-    bucket = "terraform-shortlet"
+    bucket = var.bucket
     prefix = "terraform.tfstate/"
-  } 
+  }
 
 
   required_providers {
@@ -22,8 +22,8 @@ terraform {
 
 provider "google" {
   #credentials = file("${path.module}/genial-diagram-434320-c8-f7c39559df46.json")
-  region      = "us-east1"
-  project     = var.project_id
+  region  = var.region
+  project = var.project_id
 }
 
 

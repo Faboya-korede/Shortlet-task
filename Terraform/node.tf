@@ -1,6 +1,6 @@
 resource "google_container_node_pool" "primary_nodes" {
   name               = "primary-node-pool"
-  location           = "us-east1-b"
+  location           = var.cluster_location
   cluster            = google_container_cluster.primary.name
   initial_node_count = 1
 
