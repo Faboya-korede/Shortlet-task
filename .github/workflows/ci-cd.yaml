@@ -79,8 +79,9 @@ jobs:
       
       - name: Terraform Plan
         run: |
-          terraform plan -var-file=cred.tfvars -out=tfplan
-          terraform show -json tfplan > tfplan.json
+          terraform plan -var-file=cred.tfvars  -out="plan.tfplan"
+          terraform show -json plan.tfplan | grep -v "::debug::" | tail -n +2 > plan.json
+          pwd
         working-directory: Terraform/
       
       
@@ -88,7 +89,7 @@ jobs:
         id: evaluate_policies
         run: |
           EXIT_CODE=0
-          conftest test tfplan.json -o table --all-namespaces -p policy/ || EXIT_CODE=$?
+          conftest test plan.json -o table --all-namespaces -p policy/ || EXIT_CODE=$?
           echo "::set-output name=exit_code::$EXIT_CODE"
           
 
