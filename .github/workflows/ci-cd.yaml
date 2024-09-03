@@ -41,7 +41,7 @@ jobs:
       
       - name: Create cred.tfvars
         run: |
-          echo 'project_id = "genial-diagram-434320-c8"' > terraform/cred.tfvars
+          echo 'project_id = "genial-diagram-434320-c8"' > Terraform/cred.tfvars
           echo 'region = "us-east1"' >> Terraform/cred.tfvars
 
       - name: Set up Terraform
