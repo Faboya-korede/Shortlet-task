@@ -78,12 +78,8 @@ jobs:
           terraform plan -var-file=cred.tfvars -out=tfplan
           terraform show -json tfplan > tfplan.json
         working-directory: Terraform/
+    
       
-      - name: List OPA Policy Files
-        run: |
-          ls -la opa/policies/
-          cat opa/policies/policy.rego
-        working-directory: Terraform/
       
       - name: Evaluate with OPA
         run: |
@@ -91,7 +87,7 @@ jobs:
           opa eval --data opa/policies/policy.rego --input tfplan.json --format json "data.terraform.is_port_22_allowed" > test.json
           cat result.json
           cat test.json
-        working-directory: Terraform/
+      
       
       - name: OPA Policy Result Check
         id: opa_result_parse
