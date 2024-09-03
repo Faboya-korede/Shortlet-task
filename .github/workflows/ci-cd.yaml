@@ -88,23 +88,12 @@ jobs:
           echo "::set-output name=exit_code::$EXIT_CODE"
         working-directory: Terraform/ 
       
-      - name: OPA Policy Result Check
-        id: opa_result_parse
+      - name: OPA Rules Evaluation Failed
+        if: ${{ steps.evaluate_policies.outputs.exit_code != '0' }}
         run: |
-          # Extract the OPA policy results from the result.json file
-          policy_results=$(jq '.result[0].result' result.json)
-          
-          # Check if the policy results are empty
-          if [[ "$policy_results" == "[]" ]]; then
-            echo "Terraform plan compliant with OPA policies."
-          else
-            # Output the policy results if not compliant
-            echo "Policy violations found:"
-            echo "$policy_results"
-            exit 1
-          fi
-        working-directory: Terraform/  
-      
+          echo "The terraform resources you are deploying on the GCP Account are not complying with the defined standard. Please check the 'Evaluate Rego Policies' step to find the configuration that is not compliant and fix the code."
+          exit 1
+
   terraform:
     runs-on: ubuntu-latest
     steps:
