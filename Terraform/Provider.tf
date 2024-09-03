@@ -13,7 +13,7 @@ terraform {
 }
 
 provider "google" {
-  #credentials = file("${path.module}/genial-diagram-434320-c8-f7c39559df46.json")
+  credentials = file("${path.module}/genial-diagram-434320-c8-f7c39559df46.json")
   region      = "us-east1"
   project     = var.project_id
 }
