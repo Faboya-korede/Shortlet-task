@@ -69,7 +69,8 @@ jobs:
       #     echo 'region = "us-east1"' >> Terraform/cred.tfvars
       
       - name: Create cred.tfvars file
-        run: echo "${{ secrets.CRED_VARS }}" > cred.tfvars
+        run: |
+         echo "${{ secrets.CRED_VARS }}" > cred.tfvars
         working-directory: Terraform/
 
 
