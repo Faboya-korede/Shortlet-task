@@ -78,7 +78,13 @@ jobs:
           terraform plan -var-file=cred.tfvars -out=tfplan
           terraform show -json tfplan > tfplan.json
         working-directory: Terraform/
-    
+      
+      - name: Install Conftest
+        run: |
+          wget https://github.com/open-policy-agent/conftest/releases/download/v0.23.0/conftest_0.23.0_linux_amd64.tar.gz
+          tar xzf conftest_0.23.0_linux_amd64.tar.gz
+          sudo mv conftest /usr/local/bin
+      
       
       - name: Evaluate Rego Policies
         id: evaluate_policies
@@ -86,7 +92,7 @@ jobs:
           EXIT_CODE=0
           conftest test tfplan.json -o table --all-namespaces -p policy/ || EXIT_CODE=$?
           echo "::set-output name=exit_code::$EXIT_CODE"
-          
+
         working-directory: Terraform/ 
       
       - name: OPA Rules Evaluation Failed
