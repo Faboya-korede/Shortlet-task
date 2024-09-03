@@ -71,3 +71,12 @@ resource "kubernetes_service" "shortlet_api" {
     type = "ClusterIP"
   }
 }
+
+resource "kubernetes_config_map" "config_map" {
+  metadata {
+    name      = "config-map"
+    namespace = "api" # Replace with your namespace
+  }
+
+  data = var.config_map_values
+}

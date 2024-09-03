@@ -16,3 +16,7 @@ variable "cluster_location" {
   sensitive = true
 
 }
+
+variable "config_map_values" {
+  
+}
