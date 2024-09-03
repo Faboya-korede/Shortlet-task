@@ -18,7 +18,7 @@ variable "cluster_location" {
 }
 
 variable "config_map_values" {
-  type = string
+  type = map(string)
 
 
 }
