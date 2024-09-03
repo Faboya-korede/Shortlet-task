@@ -70,6 +70,7 @@ jobs:
       
       - name: Create cred.tfvars file
         run: echo "${{ secrets.TF_VARS }}" > cred.tfvars
+        working-directory: Terraform/
 
 
       - name: Set up Terraform
