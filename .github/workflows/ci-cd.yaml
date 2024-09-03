@@ -69,10 +69,9 @@ jobs:
       
       - name: Install OPA
         run: |
-          wget https://openpolicyagent.org/downloads/v0.36.0/opa_linux_amd64_static
-          chmod +x opa_linux_amd64_static
-          sudo mv opa_linux_amd64_static /usr/local/bin/opa
-        working-directory: Terraform/  
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod 755 ./opa
+          sudo mv opa /usr/local/bin/
       
       - name: Terraform Plan
         run: |
@@ -82,7 +81,7 @@ jobs:
     
       - name: Evaluate with OPA
         run: |
-          opa eval --data opa/policies/firewall.rego --input tfplan.json --format json "data" > result.json
+          opa eval --data policy/firewall.rego --input tfplan.json --format json "data" > result.json
           cat result.json
         working-directory: Terraform/  
         
