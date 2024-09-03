@@ -78,7 +78,7 @@ jobs:
 
       - name: Evaluate with OPA
         run: |
-          opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.jso
+          opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.json
         working-directory: Terraform/
 
       - name: OPA Policy Result Check
