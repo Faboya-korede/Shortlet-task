@@ -78,5 +78,8 @@ resource "kubernetes_config_map" "config_map" {
     namespace = "api" # Replace with your namespace
   }
 
-  data = var.config_map_values
+  data = {
+  IP_ADDRESS  = var.IP_ADDRESS
+  DOMAIN_NAME = var.DOMAIN_NAME
+}
 }

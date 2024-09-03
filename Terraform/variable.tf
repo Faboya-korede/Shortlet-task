@@ -17,8 +17,12 @@ variable "cluster_location" {
 
 }
 
-variable "config_map_values" {
-  type = map(string)
+variable "IP_ADDRESS" {
+  
+  type = string
+}
 
-
+variable "DOMAIN_NAME" {
+    type = string
+  
 }
