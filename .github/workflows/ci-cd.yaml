@@ -69,7 +69,7 @@ jobs:
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
           echo 'IP_ADDRESS  = "${{ secrets.IP_ADDRESS  }}"' >> cred.tfvars
-          cho  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
+          echo  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
         working-directory: Terraform/  
 
 
@@ -134,7 +134,7 @@ jobs:
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
           echo 'IP_ADDRESS  = "${{ secrets.IP_ADDRESS  }}"' >> cred.tfvars
-          cho  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
+          echo  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
         working-directory: Terraform/  
 
       - name: Terraform Init
