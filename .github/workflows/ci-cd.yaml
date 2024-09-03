@@ -68,10 +68,11 @@ jobs:
       #     echo 'project_id = "genial-diagram-434320-c8"' > Terraform/cred.tfvars
       #     echo 'region = "us-east1"' >> Terraform/cred.tfvars
       
-      - name: Create cred.tfvars file
+      - name: Create cred.tfvars
         run: |
-         echo "${{ secrets.CRED_VARS }}" > cred.tfvars
-        working-directory: Terraform/
+          echo 'project_id = "${{ secrets.PROJECT_ID }}"' > cred.tfvars
+          echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
+          echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
 
 
       - name: Set up Terraform
