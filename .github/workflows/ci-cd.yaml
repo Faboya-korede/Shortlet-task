@@ -69,7 +69,7 @@ jobs:
       #     echo 'region = "us-east1"' >> Terraform/cred.tfvars
       
       - name: Create cred.tfvars file
-        run: echo "${{ secrets.TF_VARS }}" > cred.tfvars
+        run: echo "${{ secrets.CRED_VARS }}" > cred.tfvars
         working-directory: Terraform/
 
 
@@ -103,8 +103,6 @@ jobs:
           EXIT_CODE=0
           conftest test plan.json -o table --all-namespaces -p policy/ || EXIT_CODE=$?
           echo "::set-output name=exit_code::$EXIT_CODE"
-          
-
         working-directory: Terraform/ 
       
       - name: OPA Rules Evaluation Failed
