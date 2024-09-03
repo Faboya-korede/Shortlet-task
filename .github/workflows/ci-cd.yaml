@@ -47,6 +47,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+       
+      - name: Setup Conftest
+        uses: princespaghetti/setup-conftest@v1    
       
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -87,6 +90,7 @@ jobs:
           EXIT_CODE=0
           conftest test tfplan.json -o table --all-namespaces -p policy/ || EXIT_CODE=$?
           echo "::set-output name=exit_code::$EXIT_CODE"
+          
 
         working-directory: Terraform/ 
       
