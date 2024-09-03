@@ -91,7 +91,7 @@ jobs:
       
       - name: Terraform Plan
         run: |
-          terraform plan -var-file=cred.tfvars  -out="plan.tfplan"
+          terraform plan -var-file=cred.tfvars -input=false -out="plan.tfplan"
           terraform show -json plan.tfplan | grep -v "::debug::" | tail -n +2 > plan.json
           pwd
         working-directory: Terraform/
