@@ -40,8 +40,7 @@ jobs:
   terraform-plan-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
 
       - name: Authenticate to Google Cloud
@@ -80,6 +79,7 @@ jobs:
         run: |
           opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.json
           cat result.json
+
         working-directory: Terraform/
 
       - name: OPA Policy Result Check
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v2
       
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v2
