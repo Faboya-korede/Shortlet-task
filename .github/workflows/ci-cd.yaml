@@ -138,5 +138,5 @@ jobs:
         working-directory: Terraform/
 
       - name: Terraform Apply
-        run: terraform apply -var-file=cred.tfvars
+        run: terraform apply -var-file=cred.tfvars -auto-approve    
         working-directory: Terraform/
