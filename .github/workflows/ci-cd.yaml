@@ -39,7 +39,9 @@ jobs:
 
 
       - name: Create cred.tfvars from secret
-        run: echo -e  "${{ secrets.CRED_VARS }}" > Terraform/cred.tfvars
+        run: |
+          printf "%s" "${{ secrets.CRED_VARS }}" > Terraform/cred.tfvars
+      
 
 
       - name: Set up Terraform
