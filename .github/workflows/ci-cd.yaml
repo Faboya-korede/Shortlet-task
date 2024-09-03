@@ -10,38 +10,43 @@ on:
 
 jobs:
   build:
-      name: push docker image to docker hub
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
+    name: push docker image to docker hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        - name: Authenticate to Google Cloud
-          uses: google-github-actions/auth@v1
-          with:
-            credentials_json: ${{ secrets.GCP_SA_KEY }} 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }} 
 
-        - name: login to docker hub
-          id: docker-hub
-          env:
-            username: ${{secrets.DOCKERHUB_USERNAME}}
-            password: ${{secrets.DOCKERHUB_PASSWORD}}
-          run: |
-            docker login -u $username -p $password 
-        - name: build the docker image
-          id: build-docker-image
-          working-directory: node-project
-          run: |
-            ls -la 
-            docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
-        - name: push the docker image
-          id: push-docker-image
-          run: docker push ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
+      - name: login to docker hub
+        id: docker-hub
+        env:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: |
+          docker login -u $username -p $password 
+
+      - name: build the docker image
+        id: build-docker-image
+        working-directory: node-project
+        run: |
+          ls -la 
+          docker build . -f Dockerfile --no-cache -t ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
+
+      - name: push the docker image
+        id: push-docker-image
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/demo-image-test:latest
 
   terraform-plan-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -62,26 +67,30 @@ jobs:
         run: terraform init
         working-directory: Terraform/
       
-
       - name: Install OPA
         run: |
           wget https://openpolicyagent.org/downloads/v0.36.0/opa_linux_amd64_static
           chmod +x opa_linux_amd64_static
           sudo mv opa_linux_amd64_static /usr/local/bin/opa
-
+      
       - name: Terraform Plan
         run: |
           terraform plan -var-file=cred.tfvars -out=tfplan
           terraform show -json tfplan > tfplan.json
         working-directory: Terraform/
-
+      
+      - name: List OPA Policy Files
+        run: |
+          ls -la opa/policies/
+          cat opa/policies/policy.rego
+        working-directory: Terraform/
+      
       - name: Evaluate with OPA
         run: |
           opa eval --data opa/policies/policy.rego --input tfplan.json "data.terraform.deny" --format json > result.json
           cat result.json
-
         working-directory: Terraform/
-
+      
       - name: OPA Policy Result Check
         id: opa_result_parse
         run: |
@@ -99,22 +108,21 @@ jobs:
           fi
         working-directory: Terraform/  
       
-      
-        
-
   terraform:
     runs-on: ubuntu-latest
     steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-      
-            - name: Set up Terraform
-              uses: hashicorp/setup-terraform@v2
-      
-            - name: Terraform Init
-              run: terraform init
-              working-directory: Terraform/
-      
-          #   - name: Terraform Apply
-          #     run: terraform apply -auto-approve
-          #     working-directory: terraform/      
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: Terraform/
+
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
+      #   working-directory: terraform/
