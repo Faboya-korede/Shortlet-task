@@ -6,26 +6,17 @@ resource "google_service_account" "workload-identity-user-sa" {
 
 data "google_client_config" "current" {}
 
-resource "google_project_iam_member" "network_admin" {
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam
+resource "google_project_iam_member" "service-a" {
   project = data.google_client_config.current.project
-  role    = "roles/compute.networkAdmin"
+  role    = "roles/storage.admin"
   member  = "serviceAccount:${google_service_account.workload-identity-user-sa.email}"
 }
 
-resource "google_project_iam_member" "load_balancer_admin" {
-  project = data.google_client_config.current.project
-  role    = "roles/compute.loadBalancerAdmin"
-  member  = "serviceAccount:${google_service_account.workload-identity-user-sa.email}"
+
+resource "google_service_account_iam_member" "service-a" {
+  service_account_id = google_service_account.workload-identity-user-sa.id
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${var.project_id}.svc.id.goog[api/workload-identity-user-sa]"
 }
 
-resource "google_project_iam_member" "k8s_developer" {
-  project = data.google_client_config.current.project
-  role    = "roles/container.developer"
-  member  = "serviceAccount:${google_service_account.workload-identity-user-sa.email}"
-}
-
-resource "google_project_iam_member" "workload_identity_role" {
-  project = data.google_client_config.current.project
-  role    = "roles/iam.workloadIdentityUser"
-  member  = "serviceAccount:${google_service_account.workload-identity-user-sa.email}"
-}
