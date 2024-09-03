@@ -117,8 +117,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+            credentials_json: ${{ secrets.GCP_SA_KEY }}       
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Create cred.tfvars
+        run: |
+          echo 'project_id = "genial-diagram-434320-c8"' > Terraform/cred.tfvars
+          echo 'region = "us-east1"' >> Terraform/cred.tfvars  
 
       - name: Terraform Init
         run: terraform init
