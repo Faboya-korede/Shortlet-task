@@ -97,6 +97,7 @@ jobs:
             echo "$policy_results"
             exit 1
           fi
+        working-directory: Terraform/  
       
       
         
