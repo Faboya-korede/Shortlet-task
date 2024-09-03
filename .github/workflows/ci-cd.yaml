@@ -68,7 +68,7 @@ jobs:
           echo 'project_id = "${{ secrets.PROJECT_ID }}"' > cred.tfvars
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
-          echo 'secret_values = "${{ secrets.REGION }}"' >> cred.tfvars
+          echo 'config_map_values = "${{ secrets.SECRET_VALUES }}"' >> cred.tfvars
         working-directory: Terraform/  
 
 
@@ -132,7 +132,7 @@ jobs:
           echo 'project_id = "${{ secrets.PROJECT_ID }}"' > cred.tfvars
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
-          echo 'secret_values = "${{ secrets.REGION }}"' >> cred.tfvars
+          echo 'config_map_values = "${{ secrets.SECRET_VALUES }}"' >> cred.tfvars
         working-directory: Terraform/  
 
       - name: Terraform Init
