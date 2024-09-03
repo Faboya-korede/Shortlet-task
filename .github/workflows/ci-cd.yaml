@@ -88,6 +88,7 @@ jobs:
       - name: Evaluate with OPA
         run: |
           opa eval --data opa/policies/policy.rego --input tfplan.json --format json "data" > result.json
+          opa eval --data opa/policies/policy.rego --input tfplan.json --format json "data.terraform.is_port_22_allowed" > test.json
           cat result.json
         working-directory: Terraform/
       
