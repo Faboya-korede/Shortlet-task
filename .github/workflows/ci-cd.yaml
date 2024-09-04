@@ -144,3 +144,34 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -var-file=cred.tfvars -auto-approve    
         working-directory: Terraform/
+
+
+  Verify-api-accesibiity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install cURL (if needed)
+        run: sudo apt-get install -y curl
+
+      - name: Test API Accessibility
+        id: test_api
+        run: |
+          # Define the API endpoint
+          API_URL=${{ secrets.API_URL }}
+
+          # Make a request to the API endpoint
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" $API_URL)
+
+          # Check if the response is 201 OK
+          if [ "$RESPONSE" -eq 201 ]; then
+            echo "API is accessible. Received HTTP 201 OK."
+          else
+            echo "API is not accessible. Received HTTP $RESPONSE."
+            exit 1
+          fi
+
+      - name: Output API Test Result
+        if: failure()
+        run: echo "API test failed. Please check the endpoint or the service status."
