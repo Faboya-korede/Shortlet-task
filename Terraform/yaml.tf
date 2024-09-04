@@ -18,9 +18,6 @@ resource "kubernetes_deployment" "shortlet_api" {
   metadata {
     name      = "shortlet-api"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
-    annotations = {
-      redeploy_id = random_id.redeploy.hex
-    }
   }
 
   spec {
