@@ -148,6 +148,7 @@ jobs:
 
   Verify-api-accesibiity:
     runs-on: ubuntu-latest
+    needs: Terraform-build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
