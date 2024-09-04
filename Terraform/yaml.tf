@@ -18,6 +18,9 @@ resource "kubernetes_deployment" "shortlet_api" {
   metadata {
     name      = "shortlet-api"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
+    annotations = {
+      redeploy_id = random_id.redeploy.hex
+    }
   }
 
   spec {
@@ -41,7 +44,7 @@ resource "kubernetes_deployment" "shortlet_api" {
 
         container {
           name  = "shortlet-api"
-          image = "gcr.io/genial-diagram-434320-c8/shortlet-api"
+          image = "gcr.io/genial-diagram-434320-c8/shortlet-api:latest"
 
           port {
             container_port = 3000
@@ -56,6 +59,9 @@ resource "kubernetes_service" "shortlet_api" {
   metadata {
     name      = "shortlet-api"
     namespace = kubernetes_namespace.monitoring.metadata[0].name
+    annotations = {
+      redeploy_id = random_id.redeploy.hex
+    }
   }
 
   spec {
