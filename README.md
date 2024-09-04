@@ -18,7 +18,8 @@ Before running the setup, ensure you have the following installed:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Terraform](https://www.terraform.io/downloads)
 - [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (gcloud CLI)
-- [OPA](https://www.openpolicyagent.org/docs/latest/getting-started/) (for policy checks)
+- [OPA](https://www.openpolicyagent.org/docs/v0.11.0/get-started/) (for policy checks)
+- [Confest](https://www.conftest.dev/install/) (Test your configuration files using Open Policy Agent)
 
 
 ## Setup Instructions
@@ -64,6 +65,14 @@ gcloud config set project YOUR_PROJECT_ID
 cd ../terraform
 ```
 
+- Create cred.tfvars File
+
+```bash
+project_id       = "YOUR_PROJECT_ID"
+region           = "YOUR_REGION"
+cluster_location = "YOUR_CLUSTER_LOCATION" #us-eas1-b"
+```
+
 - Initialize Terraform
 
 ```bash
@@ -80,7 +89,7 @@ terraform plan -var-file=cred.tfvars -input=false -out="plan.tfplan"
 - Convert the Terraform plan to JSON format:
 
 ```bash
-terraform show -json plan.tfplan | grep -v "::debug::" | tail -n +2 > plan.json
+terraform show -json plan.tfplan   > plan.json
 ```
 
 - Run OPA to check if the Terraform configuration is compliant with the policies:
@@ -89,4 +98,42 @@ terraform show -json plan.tfplan | grep -v "::debug::" | tail -n +2 > plan.json
 conftest test plan.json -o table --all-namespaces -p policy/
 ```
 
+### 6. Apply Terraform Configuration
+
+- Apply the Terraform configuration to create the infrastructure and deploy the API:
+
+```bash
+terraform apply -var-file=cred.tfvars
+```
+
+### 7. Update DNS Record
+
+### Get the External IP of the Load Balancer
+
+1. **Go to the Google Cloud Console:**
+
+   - Navigate to `Network Services > Load balancing`.
+
+2. **Locate the Load Balancer associated with your GKE service:**
+
+   - Find the Load Balancer that corresponds to your Google Kubernetes Engine (GKE) service.
+
+3. **Copy the external IP address from the Load Balancer details:**
+
+   - You will see an external IP address in the Load Balancer details section. Copy this IP address.
+
+### Update DNS Records
+
+1. **Update your DNS provider's records:**
+
+   - Log in to your DNS provider's management console.
+   - Find the DNS records section and update the relevant records (such as A or CNAME records) to point to the external IP address you copied.
+
+
+### 8. Verify Deployment
+- Check the deployed API endpoint to ensure it returns the current time.
+
+```bash
+curl <API_ENDPOINT_URL>
+```
 
