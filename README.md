@@ -27,8 +27,8 @@ Before running the setup, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Faboya-korede/shortlet-task-gke.git
-cd shortlet-task-gke
+git clone https://github.com/Faboya-korede/Shortlet-task.git
+cd shortlet-task
 ```
 
 ### 2. Build and Push Docker Image
