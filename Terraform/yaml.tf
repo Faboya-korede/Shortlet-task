@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "monitoring" {
+resource "kubernetes_namespace" "api" {
   metadata {
     name = "api"
   }
@@ -17,7 +17,7 @@ resource "kubernetes_service_account" "ksa" {
 resource "kubernetes_deployment" "shortlet_api" {
   metadata {
     name      = "shortlet-api"
-    namespace = kubernetes_namespace.monitoring.metadata[0].name
+    namespace = kubernetes_namespace.api.metadata[0].name
   }
 
   spec {
@@ -37,11 +37,11 @@ resource "kubernetes_deployment" "shortlet_api" {
       }
 
       spec {
-        service_account_name = "stackdriver-ksa"
+        service_account_name =  kubernetes_service_account.ksa.metadata[0].name
 
         container {
           name  = "shortlet-api"
-          image = "gcr.io/genial-diagram-434320-c8/shortlet-api"
+          image = "gcr.io/genial-diagram-434320-c8/shortlet-api:latest"
 
           port {
             container_port = 3000
@@ -55,7 +55,7 @@ resource "kubernetes_deployment" "shortlet_api" {
 resource "kubernetes_service" "shortlet_api" {
   metadata {
     name      = "shortlet-api"
-    namespace = kubernetes_namespace.monitoring.metadata[0].name
+    namespace = kubernetes_namespace.api.metadata[0].name
   }
 
   spec {
@@ -70,16 +70,4 @@ resource "kubernetes_service" "shortlet_api" {
 
     type = "LoadBalancer"
   }
-}
-
-resource "kubernetes_config_map" "config_map" {
-  metadata {
-    name      = "config-map"
-    namespace = "api" # Replace with your namespace
-  }
-
-  data = {
-  IP_ADDRESS  = var.IP_ADDRESS
-  DOMAIN_NAME = var.DOMAIN_NAME
-}
 }

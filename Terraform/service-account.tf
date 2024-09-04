@@ -6,7 +6,6 @@ resource "google_service_account" "workload-identity-user-sa" {
 
 data "google_client_config" "current" {}
 
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam
 resource "google_project_iam_member" "service-a" {
   project = data.google_client_config.current.project
   role    = "roles/storage.admin"

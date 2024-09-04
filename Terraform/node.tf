@@ -5,14 +5,12 @@ resource "google_container_node_pool" "primary_nodes" {
   initial_node_count = 1
 
   node_config {
-    machine_type = "e2-small" # You can adjust this to suit your needs
-    disk_size_gb = 100        # Size of the boot disk in GB
+    machine_type = "e2-small" 
+    disk_size_gb = 100        
 
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/compute",
-      "https://www.googleapis.com/auth/devstorage.read_only",
-    ]
+      "https://www.googleapis.com/auth/cloud-platform"
+      ]
 
     metadata = {
       disable-legacy-endpoints = "true"

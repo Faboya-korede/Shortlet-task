@@ -16,13 +16,3 @@ variable "cluster_location" {
   sensitive = true
 
 }
-
-variable "IP_ADDRESS" {
-  
-  type = string
-}
-
-variable "DOMAIN_NAME" {
-    type = string
-  
-}

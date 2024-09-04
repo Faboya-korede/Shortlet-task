@@ -68,8 +68,6 @@ jobs:
           echo 'project_id = "${{ secrets.PROJECT_ID }}"' > cred.tfvars
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
-          echo 'IP_ADDRESS  = "${{ secrets.IP_ADDRESS  }}"' >> cred.tfvars
-          echo  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
         working-directory: Terraform/  
 
 
@@ -133,8 +131,6 @@ jobs:
           echo 'project_id = "${{ secrets.PROJECT_ID }}"' > cred.tfvars
           echo 'region = "${{ secrets.REGION }}"' >> cred.tfvars
           echo 'cluster_location = "${{ secrets.CLUSTER_LOCATION }}"' >> cred.tfvars
-          echo 'IP_ADDRESS  = "${{ secrets.IP_ADDRESS  }}"' >> cred.tfvars
-          echo  'DOMAIN_NAME  = "${{ secrets.DOMAIN_NAME  }}"' >> cred.tfvars
         working-directory: Terraform/  
 
       - name: Terraform Init
@@ -153,6 +149,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Delay for 4 minutes
+        run: sleep 240  # Sleep for 240 seconds (4 minutes)
+    
       - name: Install cURL (if needed)
         run: sudo apt-get install -y curl
 
@@ -165,9 +164,9 @@ jobs:
           # Make a request to the API endpoint
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" $API_URL)
 
-          # Check if the response is 201 OK
-          if [ "$RESPONSE" -eq 201 ]; then
-            echo "API is accessible. Received HTTP 201 OK."
+          # Check if the response is 20O OK
+          if [ "$RESPONSE" -eq 200 ]; then
+            echo "API is accessible. Received HTTP 200 OK."
           else
             echo "API is not accessible. Received HTTP $RESPONSE."
             exit 1
