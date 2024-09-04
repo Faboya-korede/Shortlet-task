@@ -142,7 +142,7 @@ jobs:
         working-directory: Terraform/
 
       - name: Terraform Apply
-        run: terraform apply -var-file=cred.tfvars -auto-approve    
+        run: terraform apply -var-file=cred.tfvars -auto-approve -replace="kubernetes_deployment.shortlet_api"
         working-directory: Terraform/
 
 

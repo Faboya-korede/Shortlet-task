@@ -36,8 +36,3 @@ provider "kubernetes" {
 
 
 }
-
-provider "random" {}
-resource "random_id" "redeploy" {
-  byte_length = 8
-}
