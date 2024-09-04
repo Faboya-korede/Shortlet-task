@@ -40,12 +40,12 @@ jobs:
     - name: Build and push Docker image
       working-directory: node-project
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
+        docker build -t gcr.io/${{ secrets.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
+        docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
 
     - name: Verify Docker image
       run: |
-        docker run --rm gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest --version
+        docker run --rm gcr.io/${{ secrets.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest --version
 
   Policy-checker:
     runs-on: ubuntu-latest
