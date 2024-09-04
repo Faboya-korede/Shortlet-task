@@ -68,7 +68,7 @@ resource "kubernetes_service" "shortlet_api" {
       target_port = 3000
     }
 
-    type = "ClusterIP"
+    type = "LoadBalancer"
   }
 }
 
